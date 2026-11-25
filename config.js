@@ -49,7 +49,7 @@ const APP_CONFIG = {
       weight: "1,000 กรัม",
       origin: "เชียงใหม่ & น่าน",
       badge: "คุ้มสุด ประหยัด 160฿",
-      image: "images/hero-honey.jpg",
+      image: "images/sku-duo.jpg",
       description: "รวมน้ำผึ้งดอกลำไย 1 ขวด + น้ำผึ้งป่าเดือนห้า 1 ขวด พร้อมกล่องของขวัญ จัดส่งฟรีทั่วประเทศ"
     }
   ]
