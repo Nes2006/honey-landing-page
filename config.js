@@ -4,7 +4,7 @@
 const APP_CONFIG = {
   // นำ Web App URL ที่ได้จากการ Deploy Google Apps Script มาวางที่นี่
   // ตัวอย่าง: "https://script.google.com/macros/s/AKfycb.../exec"
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwcMfE4SL_Msx0TJCF6gfccxyYpmnP1XkRk3QQFFMGuWTuPiWEK5h643hIKAFyHKccv/exec",
+  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbysw1c-Aj_CvhpeySK--ZFYKtdsJWW2YNO6zLrGxJUv9chQqsUTr15UEjZQEXQX41rL/exec",
 
   // ข้อมูลผู้ส่งสำหรับพิมพ์ใบจ่าหน้าพัสดุ
   SENDER: {
