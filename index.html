@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ฟาร์มผึ้งสุวรรณ | น้ำผึ้งแท้ 100% จากธรรมชาติ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="#" class="brand">
+        <span class="brand-icon">🍯</span>
+        <span>ฟาร์มผึ้งสุวรรณ</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#products">สินค้าของเรา</a>
+        <a href="#order">สั่งซื้อออนไลน์</a>
+        <a href="fulfillment.html">ระบบหยิบ-แพ็ค &amp; จ่าหน้าพัสดุ</a>
+      </nav>
+      <div style="display:flex; gap:10px;">
+        <a href="fulfillment.html" class="btn btn-outline btn-sm">📦 หลังบ้าน (Pick &amp; Pack)</a>
+        <a href="#order" class="btn btn-primary btn-sm">สั่งซื้อเลย</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="hero-badge">✨ เก็บเกี่ยวสดใหม่จากฟาร์มธรรมชาติ 100%</span>
+        <h1>น้ำผึ้งแท้ <span>หอมหวานจากธรรมชาติ</span> ส่งตรงถึงหน้าบ้านคุณ</h1>
+        <p>
+          คัดสรรน้ำผึ้งดอกลำไยภาคเหนือและน้ำผึ้งป่าเดือนห้าแท้ ไม่ผสมน้ำตาล ไม่แต่งกลิ่น
+          บรรจุขวดแก้วสะอาดได้มาตรฐาน พร้อมระบบจัดส่งรวดเร็วทันใจ
+        </p>
+        <div class="hero-actions">
+          <a href="#order" class="btn btn-primary">สั่งซื้อน้ำผึ้งตอนนี้</a>
+          <a href="#products" class="btn btn-outline">ดูสินค้าทั้งหมด (3 SKUs)</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <strong>100%</strong>
+            <span>น้ำผึ้งแท้ไม่ผสมน้ำตาล</span>
+          </div>
+          <div class="stat-item">
+            <strong>2+ SKUs</strong>
+            <span>ดอกลำไย &amp; ป่าเดือนห้า</span>
+          </div>
+          <div class="stat-item">
+            <strong>จัดส่งฟรี</strong>
+            <span>เมื่อสั่งครบ 2 ขวดขึ้นไป</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <img src="images/hero-honey.jpg" alt="น้ำผึ้งแท้ฟาร์มผึ้งสุวรรณ" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>สินค้าแนะนำ (SKUs)</h2>
+        <p>เลือกสูตรน้ำผึ้งแท้ที่คุณชื่นชอบ ทุกรายการมีรหัส SKU ชัดเจนสำหรับตรวจสอบและจัดส่งอย่างแม่นยำ</p>
+      </div>
+      <div id="product-list" class="product-grid">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Order Section -->
+  <section id="order" class="section section-warm">
+    <div class="container">
+      <div class="section-header">
+        <h2>สั่งซื้อสินค้า &amp; กรอกข้อมูลจัดส่ง</h2>
+        <p>ข้อมูลคำสั่งซื้อจะถูกบันทึกลง Google Sheet ทันที เพื่อนำไปหยิบสินค้า แพ็ค และพิมพ์ใบจ่าหน้าพัสดุ</p>
+      </div>
+
+      <div class="order-wrapper">
+        <!-- Order Summary -->
+        <aside class="summary-card">
+          <h3>สรุปรายการสั่งซื้อ</h3>
+          <div class="selected-preview">
+            <img id="preview-img" src="images/sku-longan.jpg" alt="สินค้าที่เลือก" />
+            <div>
+              <span id="preview-sku" class="sku-tag">HONEY-LNG-500</span>
+              <div id="preview-name" style="font-weight:700;">น้ำผึ้งดอกลำไยแท้ 100%</div>
+              <div id="preview-unit-price" style="color:var(--amber-700); font-weight:600;">฿290 / ขวด</div>
+            </div>
+          </div>
+
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span>ราคาต่อหน่วย</span>
+              <strong id="summary-unit">฿290</strong>
+            </div>
+            <div class="price-row">
+              <span>จำนวน</span>
+              <strong id="summary-qty">1 ชิ้น</strong>
+            </div>
+            <div class="price-row">
+              <span>ค่าจัดส่ง</span>
+              <strong style="color:var(--green-600);">ฟรี</strong>
+            </div>
+            <div class="price-row price-total">
+              <span>ยอดรวมทั้งหมด</span>
+              <span id="summary-total">฿290</span>
+            </div>
+          </div>
+
+          <p style="margin-top:16px; font-size:0.84rem; color:var(--text-muted);">
+            🔒 ข้อมูลที่อยู่และเบอร์โทรจะใช้สำหรับจัดทำใบจ่าหน้าพัสดุและจัดส่งสินค้าเท่านั้น
+          </p>
+        </aside>
+
+        <!-- Order Form -->
+        <div class="form-card">
+          <h3>แบบฟอร์มสั่งซื้อ</h3>
+          <form id="order-form" class="form-grid">
+            <div class="form-group full">
+              <label for="sku-select">เลือกสินค้า (SKU) *</label>
+              <select id="sku-select" required></select>
+            </div>
+
+            <div class="form-group">
+              <label for="quantity">จำนวน (ชิ้น) *</label>
+              <input type="number" id="quantity" min="1" max="50" value="1" required />
+            </div>
+
+            <div class="form-group">
+              <label for="customerName">ชื่อ-นามสกุล ผู้รับ *</label>
+              <input type="text" id="customerName" placeholder="เช่น สมชาย ใจดี" required />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">เบอร์โทรศัพท์ *</label>
+              <input type="tel" id="phone" placeholder="เช่น 0812345678" required />
+            </div>
+
+            <div class="form-group">
+              <label for="postalCode">รหัสไปรษณีย์ *</label>
+              <input type="text" id="postalCode" placeholder="เช่น 10200" maxlength="5" pattern="[0-9]{5}" required />
+            </div>
+
+            <div class="form-group full">
+              <label for="address">ที่อยู่จัดส่ง (บ้านเลขที่, ถนน, แขวง/ตำบล, เขต/อำเภอ, จังหวัด) *</label>
+              <textarea id="address" rows="3" placeholder="เช่น 123/45 ซ.พหลโยธิน 24 แขวงจอมพล เขตจตุจักร กรุงเทพมหานคร" required></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label for="note">หมายเหตุเพิ่มเติม (ถ้ามี)</label>
+              <input type="text" id="note" placeholder="เช่น ฝากไว้ที่ป้อมยาม / ขอห่อกันกระแทกเพิ่ม" />
+            </div>
+
+            <div class="form-group full">
+              <button type="submit" id="submit-btn" class="btn btn-primary" style="width:100%; padding:14px; font-size:1.05rem;">
+                ✅ ยืนยันการสั่งซื้อ
+              </button>
+            </div>
+          </form>
+
+          <div id="order-alert" class="alert"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <strong>🍯 ฟาร์มผึ้งสุวรรณ (Suwan Honey Farm)</strong>
+      <p>เก็บข้อมูลคำสั่งซื้อด้วย Google Sheet • รูปภาพแยกโฟลเดอร์ใน GitHub • โฮสต์บน Vercel</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

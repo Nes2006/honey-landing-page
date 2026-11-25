@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบหยิบสินค้า แพ็คสินค้า &amp; พิมพ์ใบจ่าหน้าพัสดุ | ฟาร์มผึ้งสุวรรณ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .dashboard-header {
+      padding: 28px 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.7rem;
+      color: var(--amber-700);
+      margin-top: 4px;
+    }
+
+    .toolbar {
+      background: #fff;
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .orders-list {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .order-card {
+      background: #fff;
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 1.2fr 1.3fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .status-Pending { background: #FEF3C7; color: #92400E; }
+    .status-Picked { background: #DBEAFE; color: #1E40AF; }
+    .status-Packed { background: #DCFCE7; color: #166534; }
+    .status-Shipped { background: #E5E7EB; color: #374151; }
+
+    .pick-box {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: var(--amber-50);
+      border: 1px solid var(--amber-100);
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .pick-box img {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .action-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-panel {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      max-width: 640px;
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Shipping Label */
+    .shipping-label {
+      border: 2px solid #111827;
+      border-radius: 8px;
+      padding: 20px;
+      background: #fff;
+      color: #111827;
+      margin: 16px 0;
+    }
+
+    .label-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #111827;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+
+    .label-section {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #9CA3AF;
+    }
+
+    .label-receiver {
+      background: #F9FAFB;
+      border: 1.5px solid #111827;
+      padding: 14px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+
+    .label-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .label-items-table th,
+    .label-items-table td {
+      border: 1px solid #D1D5DB;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .label-items-table th {
+      background: #F3F4F6;
+    }
+
+    @media (max-width: 860px) {
+      .order-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-area,
+      #print-area * {
+        visibility: visible;
+      }
+      #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: 2px solid #000;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar no-print">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">🍯</span>
+        <span>ฟาร์มผึ้งสุวรรณ</span>
+      </a>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <span id="connection-pill" class="status-badge status-Pending">โหมดทดสอบ (Local)</span>
+        <a href="index.html" class="btn btn-outline btn-sm">← กลับหน้าร้าน</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container no-print">
+    <div class="dashboard-header">
+      <div>
+        <h1 style="font-size:1.7rem;">📦 ระบบหยิบสินค้า แพ็คสินค้า &amp; จ่าหน้าพัสดุ</h1>
+        <p style="color:var(--text-muted); font-size:0.95rem;">
+          ดึงข้อมูลคำสั่งซื้อจาก Google Sheet เพื่อตรวจสอบ SKU หยิบสินค้า แพ็คลงกล่อง และพิมพ์ใบจ่าหน้าพัสดุ
+        </p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button id="config-btn" class="btn btn-outline btn-sm">⚙️ ตั้งค่า Google Sheet URL</button>
+        <button id="seed-demo-btn" class="btn btn-outline btn-sm">+ สร้างออเดอร์ตัวอย่าง</button>
+        <button id="refresh-btn" class="btn btn-primary btn-sm">🔄 รีเฟรชออเดอร์</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span>ออเดอร์ทั้งหมด</span>
+        <strong id="stat-total">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>รอหยิบสินค้า (Pending)</span>
+        <strong id="stat-pending">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>หยิบแล้ว / รอแพ็ค (Picked)</span>
+        <strong id="stat-picked">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>แพ็คพร้อมส่ง (Packed)</span>
+        <strong id="stat-packed">0</strong>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <input type="text" id="search-input" placeholder="ค้นหา Order ID, ชื่อลูกค้า, เบอร์โทร หรือ SKU..." style="max-width:340px;" />
+        <select id="status-filter" style="max-width:200px;">
+          <option value="ALL">ทุกสถานะ</option>
+          <option value="Pending">Pending (รอหยิบ)</option>
+          <option value="Picked">Picked (หยิบแล้ว)</option>
+          <option value="Packed">Packed (แพ็คแล้ว)</option>
+          <option value="Shipped">Shipped (จัดส่งแล้ว)</option>
+        </select>
+      </div>
+      <div style="font-size:0.85rem; color:var(--text-muted);">
+        ขั้นตอน: <strong>1. หยิบสินค้าตาม SKU</strong> → <strong>2. แพ็คลงกล่อง</strong> → <strong>3. พิมพ์ใบจ่าหน้า</strong>
+      </div>
+    </div>
+
+    <!-- Orders -->
+    <div id="orders-container" class="orders-list"></div>
+  </main>
+
+  <!-- Shipping Label Modal -->
+  <div id="label-modal" class="modal-backdrop">
+    <div class="modal-panel">
+      <div class="no-print" style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>🏷️ ตัวอย่างใบจ่าหน้าพัสดุ (Shipping Label)</h3>
+        <button id="close-label-modal" class="btn btn-outline btn-sm">✕ ปิด</button>
+      </div>
+
+      <div id="print-area" class="shipping-label">
+        <div class="label-header">
+          <div>
+            <strong style="font-size:1.1rem;">📦 ใบจ่าหน้าพัสดุ / PACKING SLIP</strong>
+            <div style="font-size:0.82rem; color:#4B5563;" id="lbl-date">-</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.75rem; color:#4B5563;">ORDER ID</div>
+            <strong id="lbl-order-id" style="font-family:monospace; font-size:1rem;">-</strong>
+          </div>
+        </div>
+
+        <div class="label-section">
+          <div style="font-size:0.8rem; font-weight:700; color:#4B5563; margin-bottom:4px;">ผู้ส่ง (FROM):</div>
+          <div id="lbl-sender-name" style="font-weight:700;"></div>
+          <div id="lbl-sender-address" style="font-size:0.9rem;"></div>
+          <div id="lbl-sender-phone" style="font-size:0.9rem;"></div>
+        </div>
+
+        <div class="label-receiver">
+          <div style="font-size:0.82rem; font-weight:700; color:#111827; margin-bottom:4px;">ผู้รับ (TO):</div>
+          <div id="lbl-recv-name" style="font-size:1.15rem; font-weight:700;"></div>
+          <div id="lbl-recv-phone" style="font-size:1rem; font-weight:600; margin:2px 0;"></div>
+          <div id="lbl-recv-address" style="font-size:0.95rem; margin-top:4px;"></div>
+          <div style="margin-top:6px; font-size:1.05rem;">
+            รหัสไปรษณีย์: <strong id="lbl-recv-zip" style="letter-spacing:2px; font-size:1.2rem;"></strong>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.82rem; font-weight:700; margin-bottom:6px;">รายการสินค้าในกล่อง (สำหรับตรวจสอบก่อนปิดกล่อง):</div>
+          <table class="label-items-table">
+            <thead>
+              <tr>
+                <th>รหัส SKU</th>
+                <th>รายการสินค้า</th>
+                <th style="text-align:center;">จำนวน</th>
+                <th style="text-align:right;">ยอดรวม</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="lbl-sku" style="font-family:monospace; font-weight:700;"></td>
+                <td id="lbl-product"></td>
+                <td id="lbl-qty" style="text-align:center; font-weight:700;"></td>
+                <td id="lbl-total" style="text-align:right;"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div id="lbl-note" style="margin-top:8px; font-size:0.85rem; color:#374151;"></div>
+        </div>
+      </div>
+
+      <div class="no-print" style="display:flex; gap:10px; justify-content:flex-end;">
+        <button id="print-label-btn" class="btn btn-primary">🖨️ พิมพ์ใบจ่าหน้า / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Script URL Modal -->
+  <div id="config-modal" class="modal-backdrop no-print">
+    <div class="modal-panel" style="max-width:520px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3>⚙️ ตั้งค่าการเชื่อมต่อ Google Sheet</h3>
+        <button id="close-config-modal" class="btn btn-outline btn-sm">✕</button>
+      </div>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:12px;">
+        วาง Web App URL ที่ได้จากการ Deploy Google Apps Script (ลงท้ายด้วย <code>/exec</code>)
+      </p>
+      <input type="url" id="script-url-input" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:14px;" />
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button id="clear-config-btn" class="btn btn-outline btn-sm">ล้างค่า (ใช้โหมดทดสอบ)</button>
+        <button id="save-config-btn" class="btn btn-primary btn-sm">บันทึกและโหลดข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="fulfillment.js"></script>
+</body>
+</html>
